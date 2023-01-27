@@ -7,7 +7,7 @@ import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
 
 @Database(
     entities = [
-        OcupacionEntity::class
+        OcupacionEntity::class,
     ],
     version = 1
 )
