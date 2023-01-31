@@ -14,7 +14,7 @@ interface PersonaDao {
 
     @Query("""
         SELECT * 
-        FROM Persona
+        FROM Personas
         WHERE PersonaId=:personaId
         LIMIT 1
     """)

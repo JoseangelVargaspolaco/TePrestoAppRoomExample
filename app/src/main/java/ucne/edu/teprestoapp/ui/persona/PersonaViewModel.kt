@@ -42,7 +42,7 @@ class PersonaViewModel @Inject constructor(
             email = email,
             direccion = direccion,
             fechaNacimieto = fechaNacimiento,
-            ocupacionId = ocupacionId.toInt() ?: 0
+            ocupacionId = ocupacionId.toIntOrNull()?:0
         )
 
         viewModelScope.launch {

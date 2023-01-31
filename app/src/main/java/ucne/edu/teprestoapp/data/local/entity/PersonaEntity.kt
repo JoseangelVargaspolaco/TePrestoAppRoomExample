@@ -2,6 +2,7 @@ package ucne.edu.teprestoapp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.type.DateTime
 
 @Entity(tableName = "Personas")
 data class PersonaEntity(

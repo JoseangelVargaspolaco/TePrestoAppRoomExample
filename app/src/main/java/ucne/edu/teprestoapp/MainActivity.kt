@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ucne.roomexample.ui.ocupacion.OcupacionScreen
 import dagger.hilt.android.AndroidEntryPoint
+import edu.ucne.tepresto.ui.persona.PersonaScreen
 import ucne.edu.teprestoapp.ui.theme.TePrestoAppTheme
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
             val scroll = rememberScrollState()
             Column (modifier = Modifier.verticalScroll(scroll)){
                 OcupacionScreen()
+                PersonaScreen()
             }
         }
     }

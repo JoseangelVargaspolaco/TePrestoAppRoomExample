@@ -19,7 +19,7 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             RoomExampleDb::class.java,
-            "RoomExample.db")
+            "Registros.db")
             .fallbackToDestructiveMigration()
             .build()
 
@@ -28,4 +28,7 @@ object AppModule {
     @Singleton
     @Provides
     fun providesOcupacionDao(db: RoomExampleDb) = db.ocupacionDao
+    @Singleton
+    @Provides
+    fun providesPersonaDao(db: RoomExampleDb) = db.personaDao
 }
