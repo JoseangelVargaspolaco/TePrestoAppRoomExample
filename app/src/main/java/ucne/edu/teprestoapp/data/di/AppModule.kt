@@ -22,7 +22,6 @@ object AppModule {
             "Registros.db")
             .fallbackToDestructiveMigration()
             .build()
-
     }
 
     @Singleton

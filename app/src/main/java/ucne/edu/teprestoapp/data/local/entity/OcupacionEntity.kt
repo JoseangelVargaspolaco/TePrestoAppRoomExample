@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class OcupacionEntity(
     @PrimaryKey(autoGenerate = true)
     val ocupacionid: Int?=null,
-    val descripcion : String,
-    val sueldo: Double
+    var descripcion : String,
+    var sueldo: Double
 )
