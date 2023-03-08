@@ -18,6 +18,7 @@ interface OcupacionDao {
         WHERE OcupacionId=:ocupacionId
         LIMIT 1
     """)
+
     suspend fun find(ocupacionId: Int): OcupacionEntity?
 
     @Query("SELECT * FROM Ocupaciones")

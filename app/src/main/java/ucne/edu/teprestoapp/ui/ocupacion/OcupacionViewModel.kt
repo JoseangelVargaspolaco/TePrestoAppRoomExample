@@ -1,17 +1,17 @@
-package com.ucne.roomexample.ui.ocupacion
+package ucne.edu.teprestoapp.ui.ocupacion
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ucne.edu.teprestoapp.data.repository.OcupacionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
+import ucne.edu.teprestoapp.data.repository.OcupacionRepository
 import javax.inject.Inject
 
 data class OcupacionUiState(
@@ -25,31 +25,65 @@ class OcupacionViewModel @Inject constructor(
 
     var descripcion by mutableStateOf("")
     var sueldo by mutableStateOf("")
+    var isValid: Boolean by mutableStateOf(false)
 
     var uiState = MutableStateFlow(OcupacionUiState())
         private set
+
     init {
-        getListaOcupacion()
+        getLista()
     }
-    fun getListaOcupacion() {
+
+    fun getLista() {
         viewModelScope.launch(Dispatchers.IO) {
-            ocupacionRepository.getList().collect{lista ->
-                uiState.update {
-                    it.copy(ocupacionesList = lista)
-                }
+            refrescarOcupaciones()
+        }
+    }
+
+    fun validatonScreen() {
+
+        if (descripcion.isNullOrEmpty()) {
+            throw IllegalArgumentException("El campo descripción es requerido")
+        } else {
+            isValid = false
+        }
+
+        if (sueldo.isNullOrEmpty()) {
+            throw IllegalArgumentException("El campo sueldo es requerido")
+        } else {
+            isValid = false
+        }
+    }
+
+//    private  suspend fun getArticulosFromApi(){
+//       /* val articulos = gestionInventarioApi.getList()
+//        uiState.update {
+//            it.copy(articulosList = articulos)
+//        }*/
+//    }
+
+    private suspend fun refrescarOcupaciones() {
+        ocupacionRepository.getList().collect { lista ->
+            uiState.update {
+                it.copy(ocupacionesList = lista)
             }
         }
     }
 
     fun insertar() {
-        val ocupacion = OcupacionEntity(
-            descripcion = descripcion,
-            sueldo = sueldo.toDoubleOrNull() ?: 0.0
-        )
+        try {
+            validatonScreen()
+            val ocupacion = OcupacionEntity(
+                descripcion = descripcion,
+                sueldo = sueldo.toDoubleOrNull() ?: 0.0
+            )
 
-        viewModelScope.launch(Dispatchers.IO) {
-            ocupacionRepository.insert(ocupacion)
-            Limpiar()
+            viewModelScope.launch(Dispatchers.IO) {
+                ocupacionRepository.insert(ocupacion)
+                Limpiar()
+            }
+        } catch (ex: IllegalArgumentException) {
+            isValid = true
         }
     }
 
