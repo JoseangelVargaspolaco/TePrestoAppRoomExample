@@ -9,12 +9,12 @@ import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
 
 @Database(
     entities = [
-        OcupacionEntity::class,
         PersonaEntity::class,
+        OcupacionEntity::class
     ],
     version = 2
 )
 abstract class RoomExampleDb: RoomDatabase() {
-    abstract val ocupacionDao: OcupacionDao
     abstract val personaDao: PersonaDao
+    abstract val ocupacionDao: OcupacionDao
 }

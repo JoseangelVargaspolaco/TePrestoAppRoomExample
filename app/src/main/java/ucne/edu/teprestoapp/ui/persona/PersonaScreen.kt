@@ -1,14 +1,11 @@
-package edu.ucne.tepresto.ui.persona
+package ucne.edu.teprestoapp.ui.ocupacion
 
 import android.app.DatePickerDialog
 import android.os.Build
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,27 +15,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
+import edu.ucne.tepresto.ui.persona.PersonaViewModel
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PersonaScreen(
-    viewModel: PersonaViewModel = hiltViewModel()
-) {
-
-    Column(Modifier.fillMaxSize()) {
-        PersonaBody(viewModel, Modifier.fillMaxWidth())
-
-        Spacer(modifier = Modifier.padding(14.dp))
-        val uiState by viewModel.uiState.collectAsState()
-        PersonaListScreen(uiState.personaList)
-    }
+fun PersonaScreen(viewModel: PersonaViewModel = hiltViewModel()) {
+    PersonaBody(viewModel, Modifier.fillMaxWidth())
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +91,7 @@ private fun PersonaBody(
             .fillMaxWidth(),
             value = viewModel.fechaNacimiento,
             onValueChange = { viewModel.fechaNacimiento = it },
-            enabled = null == true,
+            enabled = false,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.DateRange,
@@ -136,76 +122,18 @@ private fun PersonaBody(
         )
 
 
-        ExtendedFloatingActionButton(modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth(),
+        ExtendedFloatingActionButton(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
             text = { Text("Guardar") },
             icon = { Icon(imageVector = Icons.Filled.Save, contentDescription = "Save") },
             onClick = {
-                viewModel.insertar()
-            })
+                    viewModel.insertar()
+            }
+        )
     }
 }
-
-@Composable
-private fun PersonaListScreen(personaList: List<PersonaEntity>) {
-    LazyColumn {
-        items(personaList) { persona ->
-            PersonaRow(persona)
-        }
-    }
-}
-
-@Composable
-private fun PersonaRow(persona: PersonaEntity) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = persona.nombres,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.telefono,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.celular,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.email,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.direccion,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.fechaNacimieto,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-            Text(
-                text = persona.ocupacionId.toString(),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(3f)
-            )
-        }
-        Divider(Modifier.fillMaxWidth())
-    }
-}
-
 
 
 /* metodo seleccionar ocupacion fallido */

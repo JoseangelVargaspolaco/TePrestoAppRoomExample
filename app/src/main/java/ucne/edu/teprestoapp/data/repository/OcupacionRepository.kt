@@ -2,7 +2,9 @@ package ucne.edu.teprestoapp.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import ucne.edu.teprestoapp.data.local.dao.OcupacionDao
+import ucne.edu.teprestoapp.data.local.dao.PersonaDao
 import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
+import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
 import javax.inject.Inject
 
 class OcupacionRepository @Inject constructor(
