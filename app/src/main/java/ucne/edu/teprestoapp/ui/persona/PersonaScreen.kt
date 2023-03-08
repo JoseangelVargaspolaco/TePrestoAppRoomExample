@@ -12,26 +12,32 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import edu.ucne.tepresto.ui.persona.PersonaViewModel
+import kotlinx.coroutines.launch
+import ucne.edu.teprestoapp.ui.navegation.Screen
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PersonaScreen(viewModel: PersonaViewModel = hiltViewModel()) {
-    PersonaBody(viewModel, Modifier.fillMaxWidth())
+fun PersonaScreen(viewModel: PersonaViewModel = hiltViewModel(), navController: NavController) {
+    PersonaBody(viewModel, Modifier.fillMaxWidth(), navController)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PersonaBody(
-    viewModel: PersonaViewModel, modifier: Modifier
+    viewModel: PersonaViewModel, modifier: Modifier, navController: NavController
 ) {
+    val scope = rememberCoroutineScope()
     val anio: Int
     val mes: Int
     val dia: Int
@@ -47,7 +53,28 @@ private fun PersonaBody(
         }, anio, mes, dia
     )
     /*----------------------------------------Code Start------------------------------------------------------*/
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth())
+    {
+        Icon(
+            imageVector = Icons.Filled.ArrowBack,
+            contentDescription = null,
+            modifier = Modifier
+                .size(30.dp, 30.dp)
+                .padding(4.dp)
+                .clickable {
+                    scope.launch {
+                        navController.navigate(Screen.Persona.route)
+                    }
+                }
+        )
+
+        Spacer(modifier = Modifier.padding(20.dp))
+        Text(
+            text = "Registro de personas", fontSize = 27.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.padding(10.dp))
         OutlinedTextField(modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
@@ -121,17 +148,23 @@ private fun PersonaBody(
                 .clickable {}
         )
 
-
-        ExtendedFloatingActionButton(
+        Column(
             modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            text = { Text("Guardar") },
-            icon = { Icon(imageVector = Icons.Filled.Save, contentDescription = "Save") },
-            onClick = {
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.BottomCenter)
+        ) {
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .size(120.dp, 120.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .wrapContentSize(Alignment.Center),
+                text = { Text("Guardar") },
+                icon = { Icon(imageVector = Icons.Filled.Save, contentDescription = "Save") },
+                onClick = {
                     viewModel.insertar()
-            }
-        )
+                }
+            )
+        }
     }
 }
 

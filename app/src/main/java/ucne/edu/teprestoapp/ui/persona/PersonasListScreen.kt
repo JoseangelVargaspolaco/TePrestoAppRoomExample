@@ -2,6 +2,7 @@ package ucne.edu.teprestoapp.ui.persona
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,29 +14,51 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import edu.ucne.tepresto.ui.persona.PersonaViewModel
-import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
+import kotlinx.coroutines.launch
 import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
+import ucne.edu.teprestoapp.ui.navegation.Screen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonaListScreen(onNewPersona: ()-> Unit) {
+fun PersonaListScreen(onNewPersona: ()-> Unit, navController: NavController) {
     val viewModel: PersonaViewModel = hiltViewModel()
-    val navController: NavHostController = rememberNavController()
+    val scope = rememberCoroutineScope()
     Column(Modifier.fillMaxSize()) {
+        Spacer(Modifier.height(50.dp))
         TopAppBar(
-            title = { Text("Consulta de Personas") },
+            title = {
+                Text(
+                    "Consulta de Personas", modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(
+                            Alignment.Center
+                        )
+                )
+            },
             navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
-                }
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(30.dp, 30.dp)
+                        .padding(4.dp)
+                        .clickable {
+                            scope.launch {
+                                navController.navigate(Screen.Persona.route)
+                            }
+                        }
+                )
             },
 
 
@@ -44,7 +67,6 @@ fun PersonaListScreen(onNewPersona: ()-> Unit) {
                 IconButton(onClick = { navController.navigate("Home") }) {
                     Icon(Icons.Filled.Search, contentDescription = "Buscar")
                 }
-
             }
         )
         val uiState by viewModel.uiState.collectAsState()
@@ -55,6 +77,7 @@ fun PersonaListScreen(onNewPersona: ()-> Unit) {
 
 @Composable
 fun PersonaListScreen(personaList: List<PersonaEntity>) {
+    Spacer(Modifier.height(40.dp))
     LazyColumn(
         contentPadding = PaddingValues(
             vertical = 8.dp,
@@ -86,12 +109,12 @@ private fun PersonaRow(persona: PersonaEntity) {
             ) {
                 Text(
                     text = persona.nombres,
-                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier.weight(3f)
                 )
                 Text(
                     text = persona.telefono,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier.weight(3f)
                 )
                 Text(
@@ -111,8 +134,8 @@ private fun PersonaRow(persona: PersonaEntity) {
                 )
                 Text(
                     text = persona.fechaNacimieto,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(3f)
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.weight(4f)
                 )
                 Text(
                     text = persona.ocupacionId.toString(),
