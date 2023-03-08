@@ -8,10 +8,12 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -37,6 +39,13 @@ private fun OcupacionBody(
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.padding(20.dp))
+        Text(
+            text = "Registro de ocupaciones", fontSize = 27.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.padding(10.dp))
 
         OutlinedTextField(
             modifier = Modifier
@@ -64,17 +73,23 @@ private fun OcupacionBody(
             label = { Text("Salario") }
         )
 
-
-        ExtendedFloatingActionButton(
+        Column(
             modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            text = { Text("Guardar") },
-            icon = { Icon(imageVector = Icons.Filled.Save, contentDescription = "Save") },
-            onClick = {
-                viewModel.insertar()
-            }
-        )
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.BottomCenter)
+        ) {
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .size(120.dp, 120.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .wrapContentSize(Alignment.Center),
+                text = { Text("Guardar") },
+                icon = { Icon(imageVector = Icons.Filled.Save, contentDescription = "Save") },
+                onClick = {
+                    viewModel.insertar()
+                }
+            )
+        }
     }
 }
 

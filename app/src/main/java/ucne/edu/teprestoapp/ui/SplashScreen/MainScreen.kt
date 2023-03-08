@@ -1,4 +1,4 @@
-package ucne.edu.teprestoapp.ui
+package ucne.edu.teprestoapp.ui.SplashScreen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -14,18 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.delay
-import ucne.edu.teprestoapp.Screen
+import ucne.edu.teprestoapp.ui.navegation.Screen
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainSplashScreen(navController: NavHostController): NavHostController {
-    LaunchedEffect(key1 = true) {
-        delay(5000)
-        navController.popBackStack()
-        navController.navigate(Screen.Start.route)
-    }
+    navController.navigate(Screen.Start.route)
     Splash()
     return navController
 }
@@ -53,3 +47,17 @@ fun SplashScreenPreview() {
     Splash()
 }
 
+
+/*
+* Intento de SplashScreen
+@Composable
+fun MainSplashScreen(navController: NavHostController): NavHostController {
+    LaunchedEffect(key1 = true) {
+        delay(5000)
+        navController.popBackStack()
+        navController.navigate(Screen.Start.route)
+    }
+    Splash()
+    return navController
+}
+* */
