@@ -14,17 +14,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
 import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
+import ucne.edu.teprestoapp.data.repository.OcupacionRepository
 import ucne.edu.teprestoapp.data.repository.PersonaRepository
+import ucne.edu.teprestoapp.ui.navegation.ScreenModule
 import java.text.DateFormat
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 data class PersonaUiState(
-    val personaList: List<PersonaEntity> = emptyList()
+    val personaList: List<PersonaEntity> = emptyList(),
+    val ocupacionList: List<OcupacionEntity> = emptyList()
 )
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class PersonaViewModel @Inject constructor(
-    private val personaRepository: PersonaRepository
+    private val personaRepository: PersonaRepository,
+    private val ocupacionRepository: OcupacionRepository
 ) : ViewModel() {
 
     var nombres by mutableStateOf("")
@@ -39,12 +43,24 @@ class PersonaViewModel @Inject constructor(
         private set
     init {
         getListaPersonas()
+        getListOcupacion()
     }
     fun getListaPersonas() {
         viewModelScope.launch(Dispatchers.IO) {
             personaRepository.getList().collect{listas ->
                 uiState.update {
                     it.copy(personaList = listas)
+                }
+            }
+        }
+    }
+
+    fun getListOcupacion()
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            ocupacionRepository.getList().collect{ lista ->
+                uiState.update {
+                    it.copy(ocupacionList = lista)
                 }
             }
         }

@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ucne.edu.teprestoapp.data.local.RoomExampleDb
+import ucne.edu.teprestoapp.data.remote.TePrestoWebApi
 import javax.inject.Singleton
 
 @Module
@@ -27,20 +28,21 @@ object AppModule {
             .fallbackToDestructiveMigration()
             .build()
     }
-//    @Singleton
-//    @Provides
-//    fun providesMoshi(): Moshi {
-//        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-//    }
-//    @Singleton
-//    @Provides
-//    fun providesTePrestoWebApi(moshi: Moshi): TePrestoWebApi {
-//        return Retrofit.Builder()
-//            .baseUrl("")
-//            .addConverterFactory(MoshiConverterFactory.create(moshi))
-//            .build()
-//            .create(TePrestoWebApi::class.java)
-//    }
+    @Singleton
+    @Provides
+    fun providesMoshi(): Moshi {
+        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesTePrestoApi(moshi: Moshi): TePrestoWebApi {
+        return Retrofit.Builder()
+            .baseUrl("https://teprestowebapi.azurewebsites.net")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+            .create(TePrestoWebApi::class.java)
+    }
     @Singleton
     @Provides
     fun providesPersonaDao(db: RoomExampleDb) = db.personaDao

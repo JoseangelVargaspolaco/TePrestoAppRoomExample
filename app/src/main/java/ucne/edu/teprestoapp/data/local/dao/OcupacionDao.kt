@@ -18,9 +18,16 @@ interface OcupacionDao {
         WHERE OcupacionId=:ocupacionId
         LIMIT 1
     """)
-
     suspend fun find(ocupacionId: Int): OcupacionEntity?
 
-    @Query("SELECT * FROM Ocupaciones")
+    @Query("""SELECT * 
+        FROM Ocupaciones
+        ORDER BY ocupacionId desc
+    """)
     fun getList(): Flow<List<OcupacionEntity>>
+    @Query("""SELECT * 
+        FROM Ocupaciones
+        WHERE enviado=0
+    """)
+    suspend fun getNoEnviadas(): List<OcupacionEntity>
 }

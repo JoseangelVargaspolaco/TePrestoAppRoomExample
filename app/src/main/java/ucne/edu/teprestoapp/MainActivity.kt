@@ -6,20 +6,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,9 +22,10 @@ import ucne.edu.teprestoapp.ui.ocupacion.*
 import ucne.edu.teprestoapp.ui.theme.TePrestoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import edu.ucne.tepresto.ui.persona.PersonaViewModel
+import ucne.edu.teprestoapp.ui.SplashScreen.MainSplashScreen
 
 import ucne.edu.teprestoapp.ui.navegation.DrawerMenu
-import ucne.edu.teprestoapp.ui.navegation.Screen
+import ucne.edu.teprestoapp.ui.navegation.ScreenModule
 import ucne.edu.teprestoapp.ui.persona.PersonaListScreen
 
 @AndroidEntryPoint
@@ -48,24 +44,24 @@ class MainActivity : ComponentActivity() {
                     val viewModel: PersonaViewModel = hiltViewModel()
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Start.route
+                        startDestination = ScreenModule.Splash.route
                     ) {
-//                        composable(Screen.Splash.route) {
-//                            DrawerMenu(MainSplashScreen(navController))
-//                        }
-                        composable(Screen.Start.route) {
+                        composable(ScreenModule.Splash.route) {
+                            MainSplashScreen(navController)
+                        }
+                        composable(ScreenModule.Start.route) {
                             DrawerMenu(navController)
                         }
-                        composable(Screen.Ocupacion.route) {
+                        composable(ScreenModule.Ocupacion.route) {
                             OcupacionScreen()
                         }
-                        composable(Screen.Persona.route) {
+                        composable(ScreenModule.Persona.route) {
                             PersonaScreen(viewModel,navController)
                         }
-                        composable(Screen.OcupacionList.route) {
+                        composable(ScreenModule.OcupacionList.route) {
                             OcupacionListScreen(onNewOcupacion = {}, navController)
                         }
-                        composable(Screen.PersonaList.route) {
+                        composable(ScreenModule.PersonaList.route) {
                             PersonaListScreen(onNewPersona = {}, navController)
                         }
                     }
@@ -74,7 +70,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Composable
 fun StartScreen(name: String = "") {

@@ -17,11 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
-import ucne.edu.teprestoapp.ui.navegation.Screen
+import ucne.edu.teprestoapp.ui.navegation.ScreenModule
 import ucne.edu.teprestoapp.ui.ocupacion.OcupacionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +59,7 @@ fun OcupacionListScreen(onNewOcupacion: ()-> Unit, navController: NavController)
 
             actions = {
                 // RowScope here, so these icons will be placed horizontally
-                IconButton(onClick = { navController.navigate(Screen.Start.route) }) {
+                IconButton(onClick = { navController.navigate(ScreenModule.Start.route) }) {
                     Icon(Icons.Filled.Search, contentDescription = "Buscar")
                 }
             }

@@ -2,8 +2,10 @@ package ucne.edu.teprestoapp.ui.ocupacion
 
 import android.app.DatePickerDialog
 import android.os.Build
+import android.util.Log
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -22,7 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import edu.ucne.tepresto.ui.persona.PersonaViewModel
 import kotlinx.coroutines.launch
-import ucne.edu.teprestoapp.ui.navegation.Screen
+import ucne.edu.teprestoapp.data.local.entity.OcupacionEntity
+import ucne.edu.teprestoapp.ui.navegation.ScreenModule
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +67,7 @@ private fun PersonaBody(
                 .padding(4.dp)
                 .clickable {
                     scope.launch {
-                        navController.navigate(Screen.Persona.route)
+                        navController.navigate(ScreenModule.Persona.route)
                     }
                 }
         )
@@ -132,21 +136,23 @@ private fun PersonaBody(
             },
             label = { Text(text = "Fecha de nacimiento") })
 
-        OutlinedTextField(
-            label = { Text("Seleccionar ocupacion") },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = null
-                )
-            },
-            value = viewModel.ocupacionId,
-            onValueChange = { viewModel.ocupacionId = it },
-            readOnly = true, enabled = false,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {}
-        )
+//        OutlinedTextField(
+//            label = { Text("Seleccionar ocupacion") },
+//            leadingIcon = {
+//                Icon(
+//                    imageVector = Icons.Default.ArrowDropDown,
+//                    contentDescription = null
+//                )
+//            },
+//            value = viewModel.ocupacionId,
+//            onValueChange = { viewModel.ocupacionId = it },
+//            readOnly = true, enabled = false,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .clickable {}
+//        )
+
+        OcupacionDropdownMenu()
 
         Column(
             modifier = Modifier
@@ -170,44 +176,48 @@ private fun PersonaBody(
 
 
 /* metodo seleccionar ocupacion fallido */
-//        var expandio by remember { mutableStateOf(false) }
-//
-//        val suggestions = listOf(viewModell.descripcion)
-//
-//        var selectedText by remember { mutableStateOf("") }
-//
-//        OutlinedTextField(
-//            label = { Text("Seleccionar ocupacion") },
-//            leadingIcon = {
-//                Icon(
-//                    imageVector = Icons.Default.ArrowDropDown,
-//                    contentDescription = null
-//                )
-//            },
-//            value = selectedText,
-//            onValueChange = { selectedText = it },
-//            readOnly = true, enabled = false,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .clickable {
-//                    expandio = true
-//                    Log.e("tag", "expandio")
-//                }
-//
-//        )
-//        DropdownMenu(
-//            expanded = expandio,
-//            onDismissRequest = { expandio = false },
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            suggestions.forEach { it
-//                DropdownMenuItem(
-//                    onClick = {
-//                        expandio = false
-//                        selectedText = it
-//                    },
-//                    text = { it }
-//                )
-//            }
-//        }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OcupacionDropdownMenu() {
+        var expand by remember { mutableStateOf(false) }
+
+        val selection = listOf<OcupacionEntity>()
+        var selectedText by remember { mutableStateOf("") }
+
+        OutlinedTextField(
+            label = { Text("Seleccionar ocupacion") },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null
+                )
+            },
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            readOnly = true, enabled = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    expand = true
+                    Log.e("tag", "expandio")
+                }
+
+        )
+        DropdownMenu(
+            expanded = expand,
+            onDismissRequest = { expand = false },
+            modifier = Modifier.fillMaxWidth().background(color = Color.Cyan)
+        ) {
+            selection.forEach {it
+                DropdownMenuItem(
+                    text = { Text(it.descripcion) },
+                    onClick = {
+                        expand = false
+                        selectedText = it.descripcion
+                    }
+                )
+            }
+        }
+}
 

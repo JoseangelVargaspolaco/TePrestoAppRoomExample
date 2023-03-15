@@ -3,8 +3,7 @@ package ucne.edu.teprestoapp.ui.navegation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.WavingHand
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -13,9 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,12 +27,26 @@ fun DrawerMenu(
 // icons to mimic drawer destinations
     val ic  = Icons.TwoTone.Favorite
 
-    val items = listOf(Screen.Start, Screen.Ocupacion, Screen.OcupacionList, Screen.Persona, Screen.PersonaList)
+    val items = listOf(ScreenModule.Start, ScreenModule.Ocupacion, ScreenModule.OcupacionList, ScreenModule.Persona, ScreenModule.PersonaList)
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
+                Spacer(Modifier.height(10.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = null,
+                        tint = Color.LightGray,
+                        modifier = Modifier
+                            .size(100.dp, 100.dp)
+                            .padding(4.dp),
+                    )
+                }
                 Spacer(Modifier.height(12.dp))
                 items.forEach { item ->
                     NavigationDrawerItem(
@@ -75,8 +88,9 @@ fun DrawerMenu(
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = Icons.Filled.WavingHand,
+                    imageVector = Icons.Filled.SportsMartialArts,
                     contentDescription = null,
+                    tint = Color.Cyan,
                     modifier = Modifier
                         .size(180.dp, 180.dp)
                         .padding(4.dp),
