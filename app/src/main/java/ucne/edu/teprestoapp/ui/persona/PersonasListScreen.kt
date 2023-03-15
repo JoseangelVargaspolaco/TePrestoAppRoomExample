@@ -21,12 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import edu.ucne.tepresto.ui.persona.PersonaViewModel
 import kotlinx.coroutines.launch
 import ucne.edu.teprestoapp.data.local.entity.PersonaEntity
-import ucne.edu.teprestoapp.ui.navegation.Screen
+import ucne.edu.teprestoapp.ui.navegation.ScreenModule
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +53,7 @@ fun PersonaListScreen(onNewPersona: ()-> Unit, navController: NavController) {
                         .padding(4.dp)
                         .clickable {
                             scope.launch {
-                                navController.navigate(Screen.Persona.route)
+                                navController.navigate(ScreenModule.Persona.route)
                             }
                         }
                 )
